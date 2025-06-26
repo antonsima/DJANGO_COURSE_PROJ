@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "django_proj"
+version = "0.1.0"
+description = ""
+authors = ["Anton <anton_sima@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.2.1"
+dotenv = "^0.9.9"
+psycopg2 = "^2.9.10"
+psycopg2-binary = "^2.9.10"
+pillow = "^11.2.1"
+ipython = "^9.2.0"
+django-countries = "^7.6.1"
+redis = "^6.2.0"
+
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.2.0"
+isort = "^6.0.1"
+mypy = "^1.15.0"
+black = "^25.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.mypy]
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+exclude = ["venv", "tests"]
+
+[tool.isort]
+line_length = 119
