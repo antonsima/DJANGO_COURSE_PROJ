@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <p>Удалить сообщение "{{ message.subject }}"?</p>
+    <button type="submit">Удалить</button>
+    <a href="{% url 'message_list' %}">Отмена</a>
+</form>

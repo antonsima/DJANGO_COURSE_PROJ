@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <p>Удалить клиента "{{ client.full_name }}"?</p>
+    <button type="submit">Удалить</button>
+    <a href="{% url 'client_list' %}">Отмена</a>
+</form>

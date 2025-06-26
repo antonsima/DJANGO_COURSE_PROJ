@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Сообщения</title>
+</head>
+<body>
+    <h1>Список сообщений</h1>
+    <a href="{% url 'message_create' %}">Создать сообщение</a>
+    <ul>
+        {% for message in messages %}
+            <li>
+                <strong>{{ message.subject }}</strong>
+                <p>{{ message.body|truncatechars:50 }}</p>
+                <a href="{% url 'message_update' message.pk %}">Редактировать</a>
+                <a href="{% url 'message_delete' message.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
