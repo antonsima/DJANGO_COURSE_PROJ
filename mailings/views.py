@@ -111,3 +111,11 @@ def send_mailing_view(request, pk):
 def mailing_logs(request, mailing_id):
     logs = MailingLog.objects.filter(mailing_id=mailing_id)
     return render(request, 'mailings/mailing_logs.html', {'logs': logs})
+
+def home(request):
+    context = {
+        'total_mailings': Mailing.get_total_count(),
+        'active_mailings': Mailing.get_active_count(),
+        'unique_clients': Client.get_unique_recipients_count(),
+    }
+    return render(request, 'mailings/home.html', context)

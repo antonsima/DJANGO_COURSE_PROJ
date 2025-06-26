@@ -1,6 +1,43 @@
-<form method="post">
-    {% csrf_token %}
-    <p>Удалить рассылку #{{ mailing.id }}?</p>
-    <button type="submit">Удалить</button>
-    <a href="{% url 'mailing_list' %}">Отмена</a>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Удаление рассылки #{{ mailing.id }}{% endblock %}
+
+{% block content %}
+    <h1>Подтверждение удаления</h1>
+    <div class="alert alert-warning">
+        <p>Вы собираетесь удалить рассылку #{{ mailing.id }}:</p>
+        <ul>
+            <li>Сообщение: {{ mailing.message.subject }}</li>
+            <li>Статус: {{ mailing.get_status_display }}</li>
+            <li>Клиентов: {{ mailing.clients.count }}</li>
+        </ul>
+        <p>Это действие нельзя отменить.</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'mailing_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .alert {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+    }
+    .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+    }
+    .btn-danger {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+</style>
+{% endblock %}

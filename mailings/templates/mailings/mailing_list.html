@@ -1,27 +1,86 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Рассылки</title>
-</head>
-<body>
-<h1>Список рассылок</h1>
-<a href="{% url 'mailing_create' %}">Создать рассылку</a>
-<a href="{% url 'mailing_logs' mailing.pk %}">Посмотреть логи</a>
-<ul>
-    {% for mailing in mailings %}
-    <li>
-        <strong>Рассылка #{{ mailing.id }}</strong>
-        <p>Статус: {{ mailing.get_status_display }}</p>
-        <p>Сообщение: {{ mailing.message.subject }}</p>
-        <p>Получателей: {{ mailing.clients.count }}</p>
-        <a href="{% url 'mailing_update' mailing.pk %}">Редактировать</a>
-        <a href="{% url 'mailing_delete' mailing.pk %}">Удалить</a>
-        <form action="{% url 'send_mailing' mailing.pk %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit">Отправить сейчас</button>
-        </form>
-    </li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Список рассылок{% endblock %}
+
+{% block content %}
+    <h1>Список рассылок</h1>
+    <a href="{% url 'mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Статус</th>
+                <th>Сообщение</th>
+                <th>Клиентов</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mailing in mailings %}
+                <tr>
+                    <td>{{ mailing.id }}</td>
+                    <td>{{ mailing.get_status_display }}</td>
+                    <td>{{ mailing.message.subject|truncatechars:30 }}</td>
+                    <td>{{ mailing.clients.count }}</td>
+                    <td>
+                        <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                        <a href="{% url 'send_mailing' mailing.pk %}" class="btn btn-sm btn-outline-success">Отправить</a>
+                        <a href="{% url 'mailing_logs' mailing.pk %}" class="btn btn-sm btn-outline-info">Логи</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    .table th, .table td {
+        padding: 0.75rem;
+        border: 1px solid #dee2e6;
+        vertical-align: top;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+    .btn {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        margin-right: 0.5rem;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-outline-secondary {
+        color: #6c757d;
+        border: 1px solid #6c757d;
+    }
+    .btn-outline-danger {
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+    .btn-outline-success {
+        color: #28a745;
+        border: 1px solid #28a745;
+    }
+    .btn-outline-info {
+        color: #17a2b8;
+        border: 1px solid #17a2b8;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}

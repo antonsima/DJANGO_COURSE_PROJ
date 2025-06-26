@@ -1,25 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Логи рассылки</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Логи рассылки #{{ mailing_id }}{% endblock %}
+
+{% block content %}
     <h1>Логи рассылки #{{ mailing_id }}</h1>
-    <table border="1">
-        <tr>
-            <th>Дата</th>
-            <th>Клиент</th>
-            <th>Статус</th>
-            <th>Ответ сервера</th>
-        </tr>
-        {% for log in logs %}
-            <tr>
-                <td>{{ log.timestamp }}</td>
-                <td>{{ log.client.email }}</td>
-                <td>{{ log.get_status_display }}</td>
-                <td>{{ log.server_response|default:"-" }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+    <a href="{% url 'mailing_list' %}" class="btn btn-secondary">Назад к списку</a>
+    
+    <div class="logs-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Клиент</th>
+                    <th>Статус</th>
+                    <th>Ответ сервера</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr class="{% if log.status == 'success' %}table-success{% else %}table-danger{% endif %}">
+                        <td>{{ log.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td>{{ log.client.email }}</td>
+                        <td>{{ log.get_status_display }}</td>
+                        <td>{{ log.server_response|default:"-" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Нет данных о попытках отправки</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .logs-container {
+        margin-top: 2rem;
+    }
+    .table-success {
+        background-color: #d4edda;
+    }
+    .table-danger {
+        background-color: #f8d7da;
+    }
+</style>
+{% endblock %}

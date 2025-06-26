@@ -1,5 +1,13 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-</form>
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Редактирование клиента{% else %}Добавление клиента{% endif %}{% endblock %}
+
+{% block content %}
+    <h1>{% if form.instance.pk %}Редактирование клиента{% else %}Добавление клиента{% endif %}</h1>
+    <form method="post" style="max-width: 500px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="padding: 0.5rem 1rem; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Сохранить</button>
+        <a href="{% url 'client_list' %}" style="padding: 0.5rem 1rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 1rem;">Отмена</a>
+    </form>
+{% endblock %}

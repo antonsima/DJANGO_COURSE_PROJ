@@ -1,6 +1,68 @@
-<form method="post">
-    {% csrf_token %}
-    <p>Удалить сообщение "{{ message.subject }}"?</p>
-    <button type="submit">Удалить</button>
-    <a href="{% url 'message_list' %}">Отмена</a>
-</form>
+{% extends "base.html" %}
+
+{% block title %}Подтверждение удаления сообщения{% endblock %}
+
+{% block content %}
+    <div class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="confirmation-header">
+                <h2>Подтверждение удаления</h2>
+            </div>
+            <div class="confirmation-body">
+                <p>Вы уверены, что хотите удалить это сообщение?</p>
+                <div class="message-preview">
+                    <h4>{{ message.subject }}</h4>
+                    <p>{{ message.body|truncatechars:100 }}</p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="confirmation-actions">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                        <a href="{% url 'message_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Отмена
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirmation-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+    }
+    .confirmation-card {
+        width: 100%;
+        max-width: 600px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .confirmation-header {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+    }
+    .confirmation-body {
+        padding: 20px;
+    }
+    .message-preview {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-left: 4px solid #6c757d;
+    }
+    .confirmation-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}

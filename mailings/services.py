@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from .models import Mailing, Client
+from .models import Mailing, Client, MailingLog
 
 
 def send_mailing(mailing_id):

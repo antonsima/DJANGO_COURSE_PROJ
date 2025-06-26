@@ -13,6 +13,11 @@ class Client(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
 
+    @classmethod
+    def get_unique_recipients_count(cls):
+        """Количество уникальных клиентов для всех рассылок"""
+        return cls.objects.distinct().count()
+
 
 class Message(models.Model):
     subject = models.CharField(max_length=255, verbose_name='Тема письма')
@@ -57,6 +62,16 @@ class Mailing(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+
+    @classmethod
+    def get_total_count(cls):
+        """Общее количество рассылок"""
+        return cls.objects.count()
+
+    @classmethod
+    def get_active_count(cls):
+        """Количество активных рассылок"""
+        return cls.objects.filter(status='started').count()
 
 
 class MailingLog(models.Model):
