@@ -1,5 +1,11 @@
+import os
+
 from django.core.mail import send_mail
-from .models import Mailing, Client, MailingLog
+from dotenv import load_dotenv
+
+from .models import Mailing, MailingLog
+
+load_dotenv(override=True)
 
 
 def send_mailing(mailing_id):
@@ -11,14 +17,14 @@ def send_mailing(mailing_id):
             send_mail(
                 subject=mailing.message.subject,
                 message=mailing.message.body,
-                from_email='noreply@yourdomain.com',
+                from_email=os.getenv("EMAIL_HOST_USER"),
                 recipient_list=[client.email],
                 fail_silently=False,
             )
-            status = 'success'
-            response = 'Письмо отправлено'
+            status = "success"
+            response = "Письмо отправлено"
         except Exception as e:
-            status = 'failed'
+            status = "failed"
             response = str(e)
 
         # Логируем попытку
@@ -30,6 +36,6 @@ def send_mailing(mailing_id):
         )
 
     # Обновляем статус рассылки
-    if mailing.status != 'started':
-        mailing.status = 'started'
+    if mailing.status != "started":
+        mailing.status = "started"
         mailing.save()

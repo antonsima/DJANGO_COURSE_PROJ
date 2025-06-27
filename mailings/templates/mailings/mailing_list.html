@@ -3,36 +3,52 @@
 {% block title %}Список рассылок{% endblock %}
 
 {% block content %}
-    <h1>Список рассылок</h1>
-    <a href="{% url 'mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Статус</th>
-                <th>Сообщение</th>
-                <th>Клиентов</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for mailing in mailings %}
-                <tr>
-                    <td>{{ mailing.id }}</td>
-                    <td>{{ mailing.get_status_display }}</td>
-                    <td>{{ mailing.message.subject|truncatechars:30 }}</td>
-                    <td>{{ mailing.clients.count }}</td>
-                    <td>
-                        <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                        <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
-                        <a href="{% url 'send_mailing' mailing.pk %}" class="btn btn-sm btn-outline-success">Отправить</a>
-                        <a href="{% url 'mailing_logs' mailing.pk %}" class="btn btn-sm btn-outline-info">Логи</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h1>Список рассылок</h1>
+<a href="{% url 'mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Статус</th>
+        <th>Сообщение</th>
+        <th>Клиентов</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for mailing in mailings %}
+    <tr>
+        <td>{{ mailing.id }}</td>
+        <td>{{ mailing.get_status_display }}</td>
+        <td>{{ mailing.message.subject|truncatechars:30 }}</td>
+        <td>{{ mailing.clients.count }}</td>
+        <td>
+            <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+            <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+
+            <!-- Заменяем ссылку на форму для отправки -->
+            <form action="{% url 'send_mailing' mailing.pk %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-success"
+                        style="display: inline;
+                   padding: 0.25rem 0.5rem;
+                   font-size: 0.875rem;
+                   line-height: 1.5;
+                   border-radius: 0.2rem;
+                   text-decoration: none;
+                   cursor: pointer;
+                   background-color: white !important;">  <!-- Добавлено -->
+                    Отправить
+                </button>
+            </form>
+
+            <a href="{% url 'mailing_logs' mailing.pk %}" class="btn btn-sm btn-outline-info">Логи</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 
 {% block extra_css %}
