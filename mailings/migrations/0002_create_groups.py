@@ -4,36 +4,39 @@ from django.db import migrations
 
 
 def create_groups(apps, schema_editor):
-    Group = apps.get_model('auth', 'Group')
-    Permission = apps.get_model('auth', 'Permission')
-    ContentType = apps.get_model('contenttypes', 'ContentType')
+    Group = apps.get_model("auth", "Group")
+    Permission = apps.get_model("auth", "Permission")
+    ContentType = apps.get_model("contenttypes", "ContentType")
 
     # Создаем группы
-    manager_group, _ = Group.objects.get_or_create(name='Managers')
-    user_group, _ = Group.objects.get_or_create(name='Users')
+    manager_group, _ = Group.objects.get_or_create(name="Managers")
+    user_group, _ = Group.objects.get_or_create(name="Users")
 
     # Получаем ContentType для модели User
-    user_content_type = ContentType.objects.get_for_model(Group)  # Используем Group как proxy
+    user_content_type = ContentType.objects.get_for_model(
+        Group
+    )  # Используем Group как proxy
 
     # Создаем и назначаем права
     can_view_all, _ = Permission.objects.get_or_create(
-        codename='can_view_all',
-        name='Can view all objects',
-        content_type=user_content_type
+        codename="can_view_all",
+        name="Can view all objects",
+        content_type=user_content_type,
     )
     can_block_users, _ = Permission.objects.get_or_create(
-        codename='can_block_users',
-        name='Can block users',
-        content_type=user_content_type
+        codename="can_block_users",
+        name="Can block users",
+        content_type=user_content_type,
     )
     can_disable_mailings, _ = Permission.objects.get_or_create(
-        codename='can_disable_mailings',
-        name='Can disable mailings',
-        content_type=user_content_type
+        codename="can_disable_mailings",
+        name="Can disable mailings",
+        content_type=user_content_type,
     )
 
     # Назначаем права группам
     manager_group.permissions.add(can_view_all, can_block_users, can_disable_mailings)
+
 
 class Migration(migrations.Migration):
 

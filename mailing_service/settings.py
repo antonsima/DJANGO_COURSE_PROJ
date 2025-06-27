@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mailings",
-    'users.apps.UsersConfig',
+    "users.apps.UsersConfig",
     "django.contrib.sites",
     "allauth",
     "allauth.account",
@@ -158,30 +158,36 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email', 'username', 'first_name', 'last_name', 'password1', 'password2']
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = [
+    "email*",
+    "username",
+    "first_name",
+    "last_name",
+    "password1",
+    "password2",
+]
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 ACCOUNT_FORMS = {
     "reset_password": "mailings.forms.CustomResetPasswordForm",
     "reset_password_from_key": "mailings.forms.CustomResetPasswordKeyForm",
-    'signup': 'users.forms.CustomSignupForm',
+    "signup": "users.forms.CustomSignupForm",
 }
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-MANAGER_GROUP_NAME = 'Managers'
-USER_GROUP_NAME = 'Users'
+MANAGER_GROUP_NAME = "Managers"
+USER_GROUP_NAME = "Users"
 
 CACHES = {
     "default": {

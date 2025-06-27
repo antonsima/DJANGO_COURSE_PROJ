@@ -1,22 +1,22 @@
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView, View
 
 from .forms import ClientForm, MailingForm, MessageForm
 from .models import Client, Mailing, MailingLog, Message
 from .services import send_mailing
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView, View
-from django.core.exceptions import PermissionDenied
 
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
-    template_name = 'mailings/client_list.html'
-    context_object_name = 'clients'
+    template_name = "mailings/client_list.html"
+    context_object_name = "clients"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
@@ -31,8 +31,8 @@ class ClientListView(LoginRequiredMixin, ListView):
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
-    template_name = 'mailings/client_form.html'
-    success_url = reverse_lazy('client_list')
+    template_name = "mailings/client_form.html"
+    success_url = reverse_lazy("client_list")
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -42,8 +42,8 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
-    template_name = 'mailings/client_form.html'
-    success_url = reverse_lazy('client_list')
+    template_name = "mailings/client_form.html"
+    success_url = reverse_lazy("client_list")
 
     def dispatch(self, request, *args, **kwargs):
         client = self.get_object()
@@ -54,8 +54,8 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
-    template_name = 'mailings/client_confirm_delete.html'
-    success_url = reverse_lazy('client_list')
+    template_name = "mailings/client_confirm_delete.html"
+    success_url = reverse_lazy("client_list")
 
     def dispatch(self, request, *args, **kwargs):
         client = self.get_object()
@@ -68,8 +68,8 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
-    template_name = 'mailings/message_list.html'
-    context_object_name = 'messages'
+    template_name = "mailings/message_list.html"
+    context_object_name = "messages"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
@@ -84,8 +84,8 @@ class MessageListView(LoginRequiredMixin, ListView):
 class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
     form_class = MessageForm
-    template_name = 'mailings/message_form.html'
-    success_url = reverse_lazy('message_list')
+    template_name = "mailings/message_form.html"
+    success_url = reverse_lazy("message_list")
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -95,8 +95,8 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = Message
     form_class = MessageForm
-    template_name = 'mailings/message_form.html'
-    success_url = reverse_lazy('message_list')
+    template_name = "mailings/message_form.html"
+    success_url = reverse_lazy("message_list")
 
     def dispatch(self, request, *args, **kwargs):
         message = self.get_object()
@@ -107,8 +107,8 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = Message
-    template_name = 'mailings/message_confirm_delete.html'
-    success_url = reverse_lazy('message_list')
+    template_name = "mailings/message_confirm_delete.html"
+    success_url = reverse_lazy("message_list")
 
     def dispatch(self, request, *args, **kwargs):
         message = self.get_object()
@@ -119,8 +119,8 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
-    template_name = 'mailings/mailing_list.html'
-    context_object_name = 'mailings'
+    template_name = "mailings/mailing_list.html"
+    context_object_name = "mailings"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
@@ -135,8 +135,8 @@ class MailingListView(LoginRequiredMixin, ListView):
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
-    template_name = 'mailings/mailing_form.html'
-    success_url = reverse_lazy('mailing_list')
+    template_name = "mailings/mailing_form.html"
+    success_url = reverse_lazy("mailing_list")
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -146,8 +146,8 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
-    template_name = 'mailings/mailing_form.html'
-    success_url = reverse_lazy('mailing_list')
+    template_name = "mailings/mailing_form.html"
+    success_url = reverse_lazy("mailing_list")
 
     def dispatch(self, request, *args, **kwargs):
         mailing = self.get_object()
@@ -163,8 +163,8 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
-    template_name = 'mailings/mailing_confirm_delete.html'
-    success_url = reverse_lazy('mailing_list')
+    template_name = "mailings/mailing_confirm_delete.html"
+    success_url = reverse_lazy("mailing_list")
 
     def dispatch(self, request, *args, **kwargs):
         mailing = self.get_object()
@@ -175,7 +175,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(require_POST, name='dispatch')
+@method_decorator(require_POST, name="dispatch")
 class SendMailingView(LoginRequiredMixin, View):
     def post(self, request, pk):
         mailing = get_object_or_404(Mailing, pk=pk)
@@ -183,7 +183,7 @@ class SendMailingView(LoginRequiredMixin, View):
         # Проверка прав доступа
         if not request.user.is_manager() and mailing.owner != request.user:
             messages.error(request, "Нет прав для отправки этой рассылки")
-            return redirect('mailing_list')
+            return redirect("mailing_list")
 
         try:
             send_mailing(mailing.id)
@@ -191,19 +191,19 @@ class SendMailingView(LoginRequiredMixin, View):
         except Exception as e:
             messages.error(request, f"Ошибка: {str(e)}")
 
-        return redirect('mailing_list')
+        return redirect("mailing_list")
 
 
 class MailingLogsView(LoginRequiredMixin, ListView):
-    template_name = 'mailings/mailing_logs.html'
-    context_object_name = 'logs'
+    template_name = "mailings/mailing_logs.html"
+    context_object_name = "logs"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        mailing_id = self.kwargs['mailing_id']
+        mailing_id = self.kwargs["mailing_id"]
         mailing = get_object_or_404(Mailing, pk=mailing_id)
 
         # Проверка прав доступа
@@ -214,12 +214,12 @@ class MailingLogsView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['mailing'] = get_object_or_404(Mailing, pk=self.kwargs['mailing_id'])
+        context["mailing"] = get_object_or_404(Mailing, pk=self.kwargs["mailing_id"])
         return context
 
 
 class HomeView(TemplateView):
-    template_name = 'mailings/home.html'
+    template_name = "mailings/home.html"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
@@ -227,16 +227,18 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            "total_mailings": Mailing.get_total_count(),
-            "active_mailings": Mailing.get_active_count(),
-            "unique_clients": Client.get_unique_recipients_count(),
-        })
+        context.update(
+            {
+                "total_mailings": Mailing.get_total_count(),
+                "active_mailings": Mailing.get_active_count(),
+                "unique_clients": Client.get_unique_recipients_count(),
+            }
+        )
         return context
 
 
 class StatsView(LoginRequiredMixin, TemplateView):
-    template_name = 'mailings/stats.html'
+    template_name = "mailings/stats.html"
 
     @method_decorator(cache_page(60 * 15))
     def dispatch(self, *args, **kwargs):
@@ -248,22 +250,24 @@ class StatsView(LoginRequiredMixin, TemplateView):
 
         total_mailings = Mailing.objects.filter(owner=user).count()
 
-        active_mailings = Mailing.objects.filter(owner=user, status='active').count()
+        active_mailings = Mailing.objects.filter(owner=user, status="active").count()
 
         logs = MailingLog.objects.filter(mailing__owner=user)
         total_attempts = logs.count()
 
-        success_attempts = logs.filter(status='success').count()
-        failed_attempts = logs.filter(status='failed').count()
+        success_attempts = logs.filter(status="success").count()
+        failed_attempts = logs.filter(status="failed").count()
 
-        success_rate = (success_attempts / total_attempts * 100) if total_attempts > 0 else 0
+        success_rate = (
+            (success_attempts / total_attempts * 100) if total_attempts > 0 else 0
+        )
 
-        context['stats'] = {
-            'active_mailings': active_mailings,
-            'total_mailings': total_mailings,
-            'total_attempts': total_attempts,
-            'success_attempts': success_attempts,
-            'failed_attempts': failed_attempts,
-            'success_rate': success_rate,
+        context["stats"] = {
+            "active_mailings": active_mailings,
+            "total_mailings": total_mailings,
+            "total_attempts": total_attempts,
+            "success_attempts": success_attempts,
+            "failed_attempts": failed_attempts,
+            "success_rate": success_rate,
         }
         return context
