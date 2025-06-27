@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Статистика ваших рассылок</h2>
+    
+    <div class="row mt-4">
+        <!-- Всего рассылок -->
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Всего рассылок</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ stats.total_mailings }}</h4>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Всего попыток -->
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Всего попыток</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ stats.total_attempts }}</h4>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Успешные -->
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Успешные</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ stats.success_attempts }}</h4>
+                    <p class="card-text">{{ stats.success_rate|floatformat:2 }}% успеха</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Неудачные -->
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Неудачные</div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ stats.failed_attempts }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -205,6 +205,24 @@ files = [
 django = ">=4.2"
 
 [[package]]
+name = "django-redis"
+version = "6.0.0"
+description = "Full featured redis cache backend for Django."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "django_redis-6.0.0-py3-none-any.whl", hash = "sha256:20bf0063a8abee567eb5f77f375143c32810c8700c0674ced34737f8de4e36c0"},
+    {file = "django_redis-6.0.0.tar.gz", hash = "sha256:2d9cb12a20424a4c4dde082c6122f486628bae2d9c2bee4c0126a4de7fda00dd"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+redis = ">=4.0.2"
+
+[package.extras]
+hiredis = ["redis[hiredis] (>=4.0.2)"]
+
+[[package]]
 name = "dotenv"
 version = "0.9.9"
 description = "Deprecated package"
@@ -867,4 +885,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a12d6858aea9460b056c3fbf9bab258ef732cffcf15bbf9cd54755f4250d64b1"
+content-hash = "e4a933b641a4b0683f176a7295e7988e89d849444be174af015b7343bc20ed7e"

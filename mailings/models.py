@@ -1,7 +1,11 @@
 from django.db import models
 
+from mailing_service import settings
+from users.models import User
+
 
 class Client(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clients', verbose_name="Владелец")
     email = models.EmailField(unique=True, verbose_name="Email")
     full_name = models.CharField(max_length=150, verbose_name="ФИО")
     comment = models.TextField(blank=True, null=True, verbose_name="Комментарий")
@@ -20,8 +24,15 @@ class Client(models.Model):
 
 
 class Message(models.Model):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Владелец",
+        null = False
+    )
     subject = models.CharField(max_length=255, verbose_name="Тема письма")
     body = models.TextField(verbose_name="Тело письма")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.subject
@@ -32,6 +43,7 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mailings', verbose_name="Владелец")
     STATUS_CHOICES = [
         ("created", "Создана"),
         ("started", "Запущена"),
