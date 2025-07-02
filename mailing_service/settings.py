@@ -180,7 +180,6 @@ AUTH_USER_MODEL = "users.User"
 ACCOUNT_FORMS = {
     "reset_password": "mailings.forms.CustomResetPasswordForm",
     "reset_password_from_key": "mailings.forms.CustomResetPasswordKeyForm",
-    "signup": "users.forms.CustomSignupForm",
 }
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -189,9 +188,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MANAGER_GROUP_NAME = "Managers"
 USER_GROUP_NAME = "Users"
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+CACHE_ENABLED = False
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+        }
     }
-}

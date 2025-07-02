@@ -18,9 +18,9 @@ class ClientListView(LoginRequiredMixin, ListView):
     template_name = "mailings/client_list.html"
     context_object_name = "clients"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         if self.request.user.is_manager():
@@ -71,9 +71,9 @@ class MessageListView(LoginRequiredMixin, ListView):
     template_name = "mailings/message_list.html"
     context_object_name = "messages"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         if self.request.user.is_manager():
@@ -122,9 +122,9 @@ class MailingListView(LoginRequiredMixin, ListView):
     template_name = "mailings/mailing_list.html"
     context_object_name = "mailings"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         if self.request.user.is_manager():
@@ -198,9 +198,9 @@ class MailingLogsView(LoginRequiredMixin, ListView):
     template_name = "mailings/mailing_logs.html"
     context_object_name = "logs"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         mailing_id = self.kwargs["mailing_id"]
@@ -221,9 +221,9 @@ class MailingLogsView(LoginRequiredMixin, ListView):
 class HomeView(TemplateView):
     template_name = "mailings/home.html"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,9 +240,9 @@ class HomeView(TemplateView):
 class StatsView(LoginRequiredMixin, TemplateView):
     template_name = "mailings/stats.html"
 
-    @method_decorator(cache_page(60 * 15))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(cache_page(60 * 15))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
