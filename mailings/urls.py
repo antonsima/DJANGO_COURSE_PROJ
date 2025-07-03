@@ -2,10 +2,10 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from . import views
-from .views import (ClientCreateView, ClientDeleteView, ClientListView, ClientUpdateView, HomeView, MailingCreateView,
-                    MailingDeleteView, MailingListView, MailingLogsView, MailingUpdateView, MessageCreateView,
-                    MessageDeleteView, MessageListView, MessageUpdateView, SendMailingView, CompleteMailingView,
-                    UserListView, BlockUserView, UnblockUserView)
+from .views import (BlockUserView, ClientCreateView, ClientDeleteView, ClientListView, ClientUpdateView,
+                    CompleteMailingView, HomeView, MailingCreateView, MailingDeleteView, MailingListView,
+                    MailingLogsView, MailingUpdateView, MessageCreateView, MessageDeleteView, MessageListView,
+                    MessageUpdateView, SendMailingView, UnblockUserView, UserListView)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -33,8 +33,12 @@ urlpatterns = [
     ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("stats/", views.StatsView.as_view(), name="mailing_stats"),
-    path('mailing/complete/<int:pk>/', CompleteMailingView.as_view(), name='complete_mailing'),
-    path('users/', UserListView.as_view(), name='user_list'),
-    path('users/block/<int:pk>/', BlockUserView.as_view(), name='block_user'),
-    path('users/unblock/<int:pk>/', UnblockUserView.as_view(), name='unblock_user'),
+    path(
+        "mailing/complete/<int:pk>/",
+        CompleteMailingView.as_view(),
+        name="complete_mailing",
+    ),
+    path("users/", UserListView.as_view(), name="user_list"),
+    path("users/block/<int:pk>/", BlockUserView.as_view(), name="block_user"),
+    path("users/unblock/<int:pk>/", UnblockUserView.as_view(), name="unblock_user"),
 ]

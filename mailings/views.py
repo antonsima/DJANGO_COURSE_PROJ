@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
@@ -12,8 +12,6 @@ from django.views.generic import CreateView, DeleteView, ListView, TemplateView,
 from .forms import ClientForm, MailingForm, MessageForm
 from .models import Client, Mailing, MailingLog, Message
 from .services import send_mailing
-from django.urls import reverse
-
 
 User = get_user_model()
 
@@ -182,38 +180,37 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
-    template_name = 'users/user_list.html'
-    context_object_name = 'users'
-    permission_required = 'users.can_block_users'
+    template_name = "users/user_list.html"
+    context_object_name = "users"
+    permission_required = "users.can_block_users"
 
     def get_queryset(self):
         # Получаем только обычных пользователей (не модераторов и не суперпользователей)
         return User.objects.filter(
-            is_superuser=False,
-            groups__name__isnull=True
+            is_superuser=False, groups__name__isnull=True
         ).exclude(pk=self.request.user.pk)
 
 
 class BlockUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'users.can_block_users'
+    permission_required = "users.can_block_users"
 
     def post(self, request, pk):
         user = get_user_model().objects.get(pk=pk)
         user.is_active = False
         user.save()
         messages.success(request, f"Пользователь {user.email} заблокирован")
-        return redirect('user_list')
+        return redirect("user_list")
 
 
 class UnblockUserView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'users.can_block_users'
+    permission_required = "users.can_block_users"
 
     def post(self, request, pk):
         user = get_user_model().objects.get(pk=pk)
         user.is_active = True
         user.save()
         messages.success(request, f"Пользователь {user.email} разблокирован")
-        return redirect('user_list')
+        return redirect("user_list")
 
 
 @method_decorator(require_POST, name="dispatch")
@@ -222,8 +219,10 @@ class SendMailingView(LoginRequiredMixin, View):
         mailing = get_object_or_404(Mailing, pk=pk)
 
         # Проверка статуса рассылки
-        if mailing.status == 'completed':
-            messages.warning(request, f"Рассылка #{pk} завершена и не может быть отправлена")
+        if mailing.status == "completed":
+            messages.warning(
+                request, f"Рассылка #{pk} завершена и не может быть отправлена"
+            )
             return redirect("mailing_list")
 
         # Проверка прав доступа
@@ -320,11 +319,11 @@ class StatsView(LoginRequiredMixin, TemplateView):
 
 
 class CompleteMailingView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'users.can_disable_mailings'
+    permission_required = "users.can_disable_mailings"
     raise_exception = True
 
     def post(self, request, pk):
         mailing = get_object_or_404(Mailing, pk=pk)
-        mailing.status = 'completed'
+        mailing.status = "completed"
         mailing.save()
-        return redirect(reverse('mailing_list'))
+        return redirect(reverse("mailing_list"))

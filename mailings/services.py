@@ -13,7 +13,7 @@ def send_mailing(mailing_id):
     clients = mailing.clients.all()
 
     # Проверяем, что рассылка не завершена
-    if mailing.status == 'completed':
+    if mailing.status == "completed":
         raise Exception("Рассылка завершена и не может быть отправлена")
 
     for client in clients:
