@@ -1,55 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}Список рассылок{% endblock %}
+{% block title %}Список пользователей{% endblock %}
 
 {% block content %}
-<h1>Список рассылок</h1>
-{% if not user.is_manager %}
-<a href="{% url 'mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
-{% endif %}
+<h1>Список пользователей</h1>
 
-<table class="table">
+<table style="width: 100%; border-collapse: collapse;">
     <thead>
-    <tr>
-        <th>ID</th>
-        <th>Статус</th>
-        <th>Сообщение</th>
-        <th>Клиентов</th>
-        <th>Действия</th>
+    <tr style="background: #f8f9fa;">
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">ID</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">Email</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">Имя</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">Фамилия</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">Статус</th>
+        <th style="padding: 0.75rem; text-align: left; border: 1px solid #dee2e6;">Действия</th>
     </tr>
     </thead>
     <tbody>
-    {% for mailing in mailings %}
+    {% for user in users %}
     <tr>
-        <td>{{ mailing.id }}</td>
-        <td>{{ mailing.get_status_display }}</td>
-        <td>{{ mailing.message.subject|truncatechars:30 }}</td>
-        <td>{{ mailing.clients.count }}</td>
-        <td>
-            {% if not user.is_manager %}
-            <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-            <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
-
-            <!-- Заменяем ссылку на форму для отправки -->
-            <form action="{% url 'send_mailing' mailing.pk %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-success"
-                        style="display: inline;
-                   padding: 0.25rem 0.5rem;
-                   font-size: 0.875rem;
-                   line-height: 1.5;
-                   border-radius: 0.2rem;
-                   text-decoration: none;
-                   cursor: pointer;
-                   background-color: white !important;">  <!-- Добавлено -->
-                    Отправить
-                </button>
-            </form>
-
-            <a href="{% url 'mailing_logs' mailing.pk %}" class="btn btn-sm btn-outline-info">Логи</a>
-            {% endif %}
-            {% if user.is_manager and mailing.status != 'completed' %}
-            <form action="{% url 'complete_mailing' mailing.pk %}" method="post" style="display: inline;">
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">{{ user.id }}</td>
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">{{ user.email }}</td>
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">{{ user.first_name }}</td>
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">{{ user.last_name }}</td>
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">
+            {% if user.is_active %}Активен{% else %}Заблокирован{% endif %}
+        </td>
+        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">
+            {% if user.is_active %}
+            <form action="{% url 'block_user' user.pk %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-outline-danger" style="display: inline;
                    padding: 0.25rem 0.5rem;
@@ -58,7 +37,20 @@
                    border-radius: 0.2rem;
                    text-decoration: none;
                    cursor: pointer;
-                   background-color: white !important;">Завершить
+                   background-color: white !important;">Заблокировать
+                </button>
+            </form>
+            {% else %}
+            <form action="{% url 'unblock_user' user.pk %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-success" style="display: inline;
+                   padding: 0.25rem 0.5rem;
+                   font-size: 0.875rem;
+                   line-height: 1.5;
+                   border-radius: 0.2rem;
+                   text-decoration: none;
+                   cursor: pointer;
+                   background-color: white !important;">Разблокировать
                 </button>
             </form>
             {% endif %}
@@ -67,9 +59,6 @@
     {% endfor %}
     </tbody>
 </table>
-{% endblock %}
-
-{% block extra_css %}
 <style>
     .table {
         width: 100%;
@@ -139,6 +128,6 @@
         background-color: #fff3cd;
         color: #856404;
         border: 1px solid #ffeeba;
-}
+    }
 </style>
 {% endblock %}
