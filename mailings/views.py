@@ -327,3 +327,14 @@ class CompleteMailingView(LoginRequiredMixin, PermissionRequiredMixin, View):
         mailing.status = "completed"
         mailing.save()
         return redirect(reverse("mailing_list"))
+
+
+class StartMailingView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "users.can_disable_mailings"
+    raise_exception = True
+
+    def post(self, request, pk):
+        mailing = get_object_or_404(Mailing, pk=pk)
+        mailing.status = "started"
+        mailing.save()
+        return redirect(reverse("mailing_list"))

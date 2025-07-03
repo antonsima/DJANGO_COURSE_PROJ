@@ -5,7 +5,7 @@ from . import views
 from .views import (BlockUserView, ClientCreateView, ClientDeleteView, ClientListView, ClientUpdateView,
                     CompleteMailingView, HomeView, MailingCreateView, MailingDeleteView, MailingListView,
                     MailingLogsView, MailingUpdateView, MessageCreateView, MessageDeleteView, MessageListView,
-                    MessageUpdateView, SendMailingView, UnblockUserView, UserListView)
+                    MessageUpdateView, SendMailingView, UnblockUserView, UserListView, StartMailingView)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -37,6 +37,11 @@ urlpatterns = [
         "mailing/complete/<int:pk>/",
         CompleteMailingView.as_view(),
         name="complete_mailing",
+    ),
+path(
+        "mailing/start/<int:pk>/",
+        StartMailingView.as_view(),
+        name="start_mailing",
     ),
     path("users/", UserListView.as_view(), name="user_list"),
     path("users/block/<int:pk>/", BlockUserView.as_view(), name="block_user"),
