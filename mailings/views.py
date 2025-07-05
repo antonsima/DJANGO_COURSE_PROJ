@@ -145,6 +145,12 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs['user'] = self.request.user
+
+        return form_kwargs
+
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
