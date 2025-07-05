@@ -169,6 +169,12 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.is_active = False  # Менеджер может только отключить
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs['user'] = self.request.user
+
+        return form_kwargs
+
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
