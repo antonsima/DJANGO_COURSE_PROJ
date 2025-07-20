@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "django_proj"
+name = "django_course_proj"
 version = "0.1.0"
 description = ""
 authors = ["Anton <anton_sima@mail.ru>"]
@@ -7,7 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-django = "^5.2.1"
 dotenv = "^0.9.9"
 psycopg2 = "^2.9.10"
 psycopg2-binary = "^2.9.10"
@@ -15,6 +14,10 @@ pillow = "^11.2.1"
 ipython = "^9.2.0"
 django-countries = "^7.6.1"
 redis = "^6.2.0"
+django-allauth = "^65.9.0"
+django-crispy-forms = "^2.4"
+crispy-bootstrap5 = "^2025.6"
+django-redis = "^6.0.0"
 
 
 [tool.poetry.group.lint.dependencies]

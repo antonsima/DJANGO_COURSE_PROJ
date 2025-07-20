@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление клиента{% endblock %}
+
+{% block content %}
+    <h1>Подтверждение удаления</h1>
+    <p>Вы уверены, что хотите удалить клиента "{{ client.full_name }}" ({{ client.email }})?</p>
+    <form method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="padding: 0.5rem 1rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Удалить</button>
+    </form>
+    <a href="{% url 'client_list' %}" style="padding: 0.5rem 1rem; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 1rem;">Отмена</a>
+{% endblock %}
